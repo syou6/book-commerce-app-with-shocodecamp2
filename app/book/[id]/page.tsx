@@ -1,8 +1,8 @@
 import { getDetailBook } from "@/app/lib/microcms/client";
 import Image from "next/image";
 
-export default async function DetailBook({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default async function DetailBook({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
 
   const book = await getDetailBook(id);
 
