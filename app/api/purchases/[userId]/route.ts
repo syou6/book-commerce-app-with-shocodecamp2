@@ -13,7 +13,7 @@ export async function GET(
             where: { userId: userId },
         });
         return NextResponse.json(purchases);
-    } catch (err) {
+    } catch (_) {
         return NextResponse.json({ error: "Error fetching purchases" });
     }
 }
