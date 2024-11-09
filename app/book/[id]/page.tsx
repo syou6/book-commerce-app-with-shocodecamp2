@@ -12,7 +12,13 @@ export async function generateStaticParams(): Promise<{ id: string }[]> {
   }));
 }
 
-export default async function DetailBook({ params }: { params: { id: string } }) {
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default async function DetailBook({ params }: PageProps) {
   const { id } = params;
   const book = await getDetailBook(id);
 
