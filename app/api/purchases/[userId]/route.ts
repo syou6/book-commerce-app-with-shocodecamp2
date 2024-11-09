@@ -19,6 +19,10 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(purchase);
   } catch (err) {
-    return NextResponse.json({ error: "An error occurred" }, { status: 500 });
+    console.error(err);
+    return NextResponse.json({ 
+      error: "An error occurred", 
+      details: (err as Error).message
+    }, { status: 500 });
   }
 }
