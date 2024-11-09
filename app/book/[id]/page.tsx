@@ -4,12 +4,15 @@ import React from "react";
 
 export async function generateStaticParams(): Promise<{ id: string }[]> {
   const books = await fetchBooks();
+  console.log("Fetched books:", books);
   if (!Array.isArray(books)) {
     return [];
   }
-  return books.map((book: { id: string }) => ({
+  const params = books.map((book: { id: string }) => ({
     id: book.id,
   }));
+  console.log("Generated params:", params);
+  return params;
 }
 
 export default async function DetailBook({ params }: { params: { id: string } }) {
