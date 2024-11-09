@@ -1,8 +1,10 @@
 import { getDetailBook } from "@/app/lib/microcms/client";
 import Image from "next/image";
 
-const DetailBook = async ({ params }: { params: { id: string } }) => {
-  const book = await getDetailBook(params.id);
+export default async function DetailBook({ params }: { params: { id: string } }) {
+  const { id } = params;
+
+  const book = await getDetailBook(id);
 
   return (
     <div className="container mx-auto p-4">
@@ -33,6 +35,4 @@ const DetailBook = async ({ params }: { params: { id: string } }) => {
       </div>
     </div>
   );
-};
-
-export default DetailBook;
+}
