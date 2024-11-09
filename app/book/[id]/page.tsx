@@ -2,7 +2,7 @@ import { getDetailBook, fetchBooks } from "@/app/lib/microcms/client";
 import Image from "next/image";
 import React from "react";
 
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<{ id: string }[]> {
   const books = await fetchBooks();
   if (!Array.isArray(books)) {
     return [];
