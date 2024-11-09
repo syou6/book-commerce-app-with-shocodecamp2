@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 
 //https://nextjs.org/docs/app/building-your-application/routing/route-handlers#dynamic-route-segments
 export async function GET(
+  _: Request,
   { params }: { params: { userId: string } }
 ) {
   const userId = params.userId;
