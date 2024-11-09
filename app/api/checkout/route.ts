@@ -3,7 +3,7 @@ import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-export async function POST(request: Request, response: Response) {
+export async function POST(request: Request) {
     const {title, price, bookId, userId} = await request.json();
     // console.log(title, price);
 
@@ -33,8 +33,10 @@ export async function POST(request: Request, response: Response) {
 
         return NextResponse.json({checkout_url: session.url});
 
-    } catch (err: any){
-        return NextResponse.json(err.message);
-
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            return NextResponse.json({ error: err.message });
+        }
+        return NextResponse.json({ error: "An unknown error occurred" });
     }
 }
