@@ -1,24 +1,9 @@
-import { getDetailBook, fetchBooks } from "@/app/lib/microcms/client";
+import { getDetailBook } from "@/app/lib/microcms/client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 
-export async function generateStaticParams(): Promise<{ id: string }[]> {
-  const books = await fetchBooks();
-  console.log("Fetched books:", books);
-  if (!Array.isArray(books)) {
-    return [];
-  }
-  const params = books.map((book: { id: string }) => ({
-    id: book.id,
-  }));
-  console.log("Generated params:", params);
-  return params;
-}
-
-export default async function DetailBook({ params }: { params: { id: string } }) {
-  const { id } = params;
-
-  const book = await getDetailBook(id);
+const DetailBook = async ({ params }: { params: { id: string } }) => {
+  const book = await getDetailBook(params.id);
 
   return (
     <div className="container mx-auto p-4">
@@ -49,4 +34,6 @@ export default async function DetailBook({ params }: { params: { id: string } })
       </div>
     </div>
   );
-}
+};
+
+export default DetailBook;
