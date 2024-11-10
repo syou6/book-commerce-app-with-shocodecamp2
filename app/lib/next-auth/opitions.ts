@@ -24,8 +24,8 @@ export const nextAuthOptions: NextAuthOptions = {
       //     // 必要に応じて他のプロパティを追加
       //   };
       // },
-      clientId: process.env.GITHUB_CLIENT_ID ?? "",
-      clientSecret: process.env.GITHUB_CLIENTSECRET ?? "",
+      clientId: process.env.GITHUB_ID ?? "",
+      clientSecret: process.env.GITHUB_SECRET ?? "",
     }),
   ],
   adapter: PrismaAdapter(prisma),
