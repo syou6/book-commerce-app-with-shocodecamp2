@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import Image from "next/image";
-import { nextAuthOptions } from "../lib/next-auth/opitions";
+import { nextAuthOptions } from "../lib/next-auth/options";
 import { BookType, Purchase, User } from "../types/types";
 import { getDetailBook } from "../lib/microcms/client";
 import PurchaseDetailBook from "../components/PurchaseDetailBook";

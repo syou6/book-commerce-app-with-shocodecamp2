@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { User } from "../types/types";
 import { getServerSession } from "next-auth";
-import { nextAuthOptions } from "../lib/next-auth/opitions";
+import { nextAuthOptions } from "../lib/next-auth/options";
 
 const Header = async() => {
 
