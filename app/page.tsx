@@ -4,81 +4,38 @@ import { getAllBooks } from "./lib/microcms/client";
 import { BookType, Purchase, User } from "./types/types";
 import { nextAuthOptions } from "./lib/next-auth/options";
 
-
-// 疑似データ
-// const books = [
-//   {
-//     id: 1,
-//     title: "Book 1",
-//     thumbnail: "/thumbnails/discord-clone-udemy.png",
-//     price: 2980,
-//     author: {
-//       id: 1,
-//       name: "Author 1",
-//       description: "Author 1 description",
-//       profile_icon: "https://source.unsplash.com/random/2",
-//     },
-//     content: "Content 1",
-//     created_at: new Date().toString(),
-//     updated_at: new Date().toString(),
-//   },
-//   {
-//     id: 2,
-//     title: "Book 2",
-//     thumbnail: "/thumbnails/notion-udemy.png",
-//     price: 1980,
-//     author: {
-//       id: 2,
-//       name: "Author 2",
-//       description: "Author 2 description",
-//       profile_icon: "https://source.unsplash.com/random/3",
-//     },
-//     content: "Content 2",
-//     created_at: new Date().toString(),
-//     updated_at: new Date().toString(),
-//   },
-//   {
-//     id: 3,
-//     title: "Book 3",
-//     price: 4980,
-//     thumbnail: "/thumbnails/openai-chatapplication-udem.png",
-//     author: {
-//       id: 3,
-//       name: "Author 3",
-//       description: "Author 3 description",
-//       profile_icon: "https://source.unsplash.com/random/4",
-//     },
-//     content: "Content 3",
-//     created_at: new Date().toString(),
-//     updated_at: new Date().toString(),
-//   },
-//   // 他の本のデータ...
-// ];
-
-// eslint-disable-next-line @next/next/no-async-client-component
 export default async function Home() {
-  const {contents} = await getAllBooks();
+  const { contents } = await getAllBooks();
+
+  // Ensure contents is an array
+  const books = Array.isArray(contents) ? contents : [];
+
   const session = await getServerSession(nextAuthOptions);
   const user = session?.user as User;
 
   let purchaseBookIds: string[] = [];
 
-  if(user) {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/purchases/${user.id}`,
-      { cache: "no-store" } //SSR
-    );
-    const purchasesData = await response.json();
-    // console.log(purchasesData);
+  if (user) {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/purchases/${user.id}`,
+        { cache: "no-store" } // SSR
+      );
 
-    purchaseBookIds = purchasesData.map(
-      (purchasesBook : Purchase) => purchasesBook.bookId
-    );
+      const purchasesData = await response.json();
 
-    // console.log(purchaseBookIds);
+      // Ensure purchasesData is an array
+      const purchasesArray = Array.isArray(purchasesData) ? purchasesData : [];
+
+      purchaseBookIds = purchasesArray.map(
+        (purchase: Purchase) => purchase.bookId.toString()
+      );
+    } catch (error) {
+      console.error("Error fetching purchases:", error);
+      // Optional: Handle the error, e.g., set purchaseBookIds to an empty array
+      purchaseBookIds = [];
+    }
   }
-
-
 
   return (
     <>
@@ -86,13 +43,12 @@ export default async function Home() {
         <h2 className="text-center w-full font-bold text-3xl mb-2">
           Book Commerce
         </h2>
-        {contents.map((book: BookType) => (
-          <Book 
-          key={book.id} 
-          book={book} 
-          // user={user}
-          isPurchased={purchaseBookIds.includes(book.id)}
-           />
+        {books.map((book: BookType) => (
+          <Book
+            key={book.id}
+            book={book}
+            isPurchased={purchaseBookIds.includes(book.id.toString())}
+          />
         ))}
       </main>
     </>
