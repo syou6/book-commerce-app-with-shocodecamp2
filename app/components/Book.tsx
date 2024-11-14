@@ -66,7 +66,7 @@ const handlePurchaseConfirm = () => {
     if(!user) {
         setShowModal(false);
         //ログインページへリダイレクト
-        router.push("/login");
+        router.push("/api/auth/signin");
     } else {
         //stripeで決済する
         startCheckout();
