@@ -23,24 +23,25 @@ const Book = ({ book, isPurchased }: BookProps) => {
 
     const startCheckout = async () => {
         try {
-            const responce = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/checkout`,{
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({
-                    title: book.title,
-                    price: book.price,
-                    userId: user?.id,
-                    bookId: book.id,
-                }),
-            }
-        );
+            const response = await fetch(
+                `/api/checkout`,
+                {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        title: book.title,
+                        price: book.price,
+                        userId: user?.id,
+                        bookId: book.id,
+                    }),
+                }
+            );
 
-        const responseData = await responce.json();
-        console.log(responseData);
-        if(responseData) {
-            router.push(responseData.checkout_url);
-        }
+            const responseData = await response.json();
+            console.log(responseData);
+            if (responseData.checkout_url) {
+                router.push(responseData.checkout_url);
+            }
 
         } catch(err) {
             console.error(err);
@@ -94,7 +95,7 @@ const handlePurchaseConfirm = () => {
       `}</style>
 
       <div className="flex flex-col items-center m-4">
-        <a  
+        <div  
         onClick={handlePurchaseClick}
         className="cursor-pointer shadow-2xl duration-300 hover:translate-y-1 hover:shadow-none">
           {book.thumbnail && book.thumbnail.url ? (
@@ -114,7 +115,7 @@ const handlePurchaseConfirm = () => {
             <p className="mt-2 text-lg text-slate-600">この本は○○...</p>
             <p className="mt-2 text-md text-slate-700">値段：{book.price}円</p>
           </div>
-        </a>
+        </div>
 
         {showModal && (
 
