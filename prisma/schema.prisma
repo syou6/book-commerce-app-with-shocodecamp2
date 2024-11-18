@@ -66,13 +66,11 @@ model User {
 
 
 model Purchase {
-  id        String   @id @default(cuid())
-  userId    String
-  bookId    String
+  id String @id @default(cuid())
+  userId String
+  bookId String
   createdAt DateTime @default(now())
-
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
@@ -82,24 +80,6 @@ model VerificationToken {
  
   @@unique([identifier, token])
   @@map("verification_tokens")
-}
-
-model Book {
-  id          String      @id @default(cuid())
-  title       String
-  price       Int
-  content     String
-  thumbnail   Thumbnail   @relation(fields: [thumbnailId], references: [id])
-  thumbnailId String      @unique
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  purchases   Purchase[]
-}
-
-model Thumbnail {
-  id     String  @id @default(cuid())
-  url    String
-  book   Book?   @relation
 }
 
 
