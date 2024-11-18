@@ -62,8 +62,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-export async function POST(request: Request, response: Response) {
-  const { title, price, bookId, userId } = await request.json();
+export async function POST(request: Request) {
+  const { title, bookId, userId } = await request.json();
 
   try {
     // チェックアウトセッションの作成
@@ -80,7 +80,7 @@ export async function POST(request: Request, response: Response) {
             product_data: {
               name: title,
             },
-            unit_amount: price,
+
           },
           quantity: 1,
         },
@@ -89,10 +89,17 @@ export async function POST(request: Request, response: Response) {
       success_url: `${baseUrl}/book/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}`,
     });
+
     return NextResponse.json({
       checkout_url: session.url,
     });
-  } catch (err: any) {
-    return NextResponse.json({ message: err.message });
+  } catch (err: unknown) {
+    console.error("Stripe Checkout Error:", err);
+
+    if (err instanceof Error) {
+      return NextResponse.json({ error: err.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ error: "予期せぬエラーが発生しました。" }, { status: 500 });
   }
 }
