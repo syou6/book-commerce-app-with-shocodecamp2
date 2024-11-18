@@ -13,7 +13,7 @@ export default async function ProfilePage() {
 
   if(user) {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/purchases/${user.id}`,
+      `/api/purchases/${user.id}`,
       { cache: "no-store" } //SSR
     );
     const purchasesData = await response.json();
