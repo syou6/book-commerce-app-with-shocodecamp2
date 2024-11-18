@@ -22,7 +22,7 @@ export default async function ProfilePage() {
         try {
             const response = await fetch(
                 `/api/purchases/${user.id}`,
-                { cache: "no-store" } //SSR
+                { cache: "no-store" } // SSR
             );
 
             if (!response.ok) {
