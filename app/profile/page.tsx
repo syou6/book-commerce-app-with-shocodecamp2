@@ -14,6 +14,8 @@ export default async function ProfilePage() {
         redirect("/api/auth/signin");
     }
 
+    console.log("取得したユーザーID:", user?.id);
+
     let purchaseDetailBooks: BookType[] = [];
 
     if (user) {
@@ -28,6 +30,8 @@ export default async function ProfilePage() {
             }
 
             const purchasesData: Purchase[] = await response.json();
+
+            console.log("取得した購入データ:", purchasesData);
 
             purchaseDetailBooks = await Promise.all(
                 purchasesData.map(async (purchase: Purchase) => {

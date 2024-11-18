@@ -8,7 +8,7 @@ import { nextAuthOptions } from "../lib/next-auth/options";
 const Header = async() => {
 
   const session = await getServerSession(nextAuthOptions);
-  const user = session?.user as User;
+  const user = session?.user as User | null;
 
   return (
     <header className="bg-slate-600 text-gray-100 shadow-lg">
@@ -31,23 +31,24 @@ const Header = async() => {
           </Link>
 
           {user ? (
-          <Link href={"/api/auth/signout"}
-          
-          className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-            ログアウト
+            <Link
+              href="/api/auth/signout"
+              className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+            >
+              ログアウト
             </Link>
-           ) : (
-            ""
-           )}
+          ) : null}
 
-          <Link href={`/profile`}>
-            <Image
-              width={50}
-              height={50}
-              alt="profile_icon"
-              src={user?.image || "/default_icon.png"}
-            />
-          </Link>
+          {user && (
+            <Link href="/profile">
+              <Image
+                width={50}
+                height={50}
+                alt="profile_icon"
+                src={user.image || "/default_icon.png"}
+              />
+            </Link>
+          )}
         </div>
       </nav>
     </header>
