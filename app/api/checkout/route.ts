@@ -9,8 +9,8 @@ export async function POST(request: Request) {
   const { title, price, bookId, userId } = await request.json();
   console.log("Received data:", { title, price, bookId, userId });
 
-
-  
+  // unit_amount が小数の場合、整数に変換（日本円の場合、1円単位）
+  const unitAmount = Math.round(price * 100); // 必要に応じて調整
 
   try {
     // チェックアウトセッションの作成
@@ -27,6 +27,7 @@ export async function POST(request: Request) {
             product_data: {
               name: title,
             },
+            unit_amount: unitAmount, // 小数点以下を避けるため修正
           },
           quantity: 1,
         },
