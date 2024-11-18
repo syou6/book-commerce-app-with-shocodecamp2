@@ -85,21 +85,21 @@ model VerificationToken {
 }
 
 model Book {
-  id        String     @id @default(cuid())
-  title     String
-  price     Int
-  content   String
-  thumbnail Thumbnail
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  purchases Purchase[]
+  id          String      @id @default(cuid())
+  title       String
+  price       Int
+  content     String
+  thumbnail   Thumbnail   @relation(fields: [thumbnailId], references: [id])
+  thumbnailId String      @unique
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  purchases   Purchase[]
 }
 
 model Thumbnail {
-  id      String @id @default(cuid())
-  url     String
-  book    Book?   @relation(fields: [bookId], references: [id])
-  bookId  String @unique
+  id     String  @id @default(cuid())
+  url    String
+  book   Book?   @relation
 }
 
 
