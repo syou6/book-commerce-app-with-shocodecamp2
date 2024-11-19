@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   console.log("Received data:", { title, price, bookId, userId });
 
   // unit_amount が小数の場合、整数に変換（日本円の場合、1円単位）
-  const unitAmount = Math.round(price * 100); // 必要に応じて調整
+  const unitAmount = Math.round(price * 1); // 必要に応じて調整
 
   try {
     // チェックアウトセッションの作成
