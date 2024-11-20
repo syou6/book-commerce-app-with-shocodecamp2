@@ -10,10 +10,8 @@ export const getAllBooks = async () => {
     const allBooks = await client.getList<BookType>({
         endpoint: "e-book",
         customRequestInit: {
-          next: {
-            revalidate: 3600
-          }
-        },
+          cache: "no-store",
+          },
     });
     return allBooks;
 };
